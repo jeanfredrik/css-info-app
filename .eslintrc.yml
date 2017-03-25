@@ -1,0 +1,9 @@
+parser: babel-eslint
+env:
+  browser: true
+extends:
+  - airbnb
+rules:
+  import/no-extraneous-dependencies: 0
+  react/jsx-filename-extension: 0
+  react/forbid-prop-types: 0
