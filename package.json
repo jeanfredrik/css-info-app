@@ -1,5 +1,6 @@
 {
   "name": "css-info-app",
+  "description": "Autogenerate documentation for functional CSS",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
