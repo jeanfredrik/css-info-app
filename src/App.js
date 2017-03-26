@@ -2,7 +2,7 @@
 document
 */
 
-import 'harpy/dist/harpy.css';
+import 'amino-css/dist/amino.css';
 
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
