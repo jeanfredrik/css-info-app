@@ -1,7 +1,7 @@
 {
   "name": "css-info-app",
   "description": "Autogenerate documentation for functional CSS",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "devDependencies": {
     "babel-eslint": "^7.1.1",
