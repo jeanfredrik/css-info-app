@@ -2,13 +2,17 @@
 document
 */
 
-import 'harpy/dist/harpy.css';
+import 'amino-css/dist/amino.css';
 
-import React, { Component } from 'react';
-import autoBind from 'react-autobind';
 import {
   generate as generateId,
 } from 'shortid';
+import React, { Component } from 'react';
+import autoBind from 'react-autobind';
+
+import {
+  filter,
+} from 'lodash/fp';
 
 import {
   transformItems,
@@ -20,8 +24,8 @@ import {
 } from './utils';
 import MainView from './MainView';
 import StartView from './StartView';
-import parseCSS from './parseCSS';
 import categories from './categories';
+import parseCSS from './parseCSS';
 
 function setStoredCSSFiles(cssFiles) {
   window.sessionStorage.setItem('cssFiles', JSON.stringify(cssFiles, jsonReplacer));
@@ -57,6 +61,10 @@ class App extends Component {
     if (storedState) {
       this.state = storedState;
     }
+    this.state = {
+      ...this.state,
+      createCSSFileFromTextFormError: null,
+    };
     autoBind(this);
     this.prepareItems = prepareItems(categories);
   }
@@ -68,6 +76,7 @@ class App extends Component {
     cssFiles: [],
     seletedCSSFile: null,
     nextPastedFileNumber: 1,
+    createCSSFileFromTextFormError: null,
   }
   componentDidUpdate() {
     saveStateToSessionStorage(this.state);
@@ -76,7 +85,7 @@ class App extends Component {
     const cssFile = this.state.cssFiles.find(item => item.key === key);
     await updateState(this, {
       seletedCSSFile: { $set: key },
-      items: { $set: transformItems(parseCSS(cssFile.content)) },
+      items: { $set: transformItems(parseCSS(cssFile.name, cssFile.content)) },
     });
   }
   async getNextPastedFileNumber() {
@@ -109,21 +118,37 @@ class App extends Component {
       showAllMediaClassNames: { $set: !state.showAllMediaClassNames },
     })));
   }
+  handleCreateCSSFileFromTextInputRef(element) {
+    this.createCSSFileFromTextInputElement = element;
+  }
   async handleCreateCSSFileFromTextFormSubmit(event) {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const content = formData.get('cssFileContent');
-    const key = generateId();
-    await updateState(this, {
-      cssFiles: { $push: [{
-        key,
-        name: `Pasted file #${await this.getNextPastedFileNumber()}`,
-        content,
-        createdAt: new Date(),
-      }] },
-    });
-    setStoredCSSFiles(this.state.cssFiles);
-    await this.setSelectedCSSFile(key);
+    let key;
+    let name;
+    try {
+      const content = this.createCSSFileFromTextInputElement.value;
+      key = generateId();
+      name = `Pasted file #${await this.getNextPastedFileNumber()}`;
+      await updateState(this, {
+        createCSSFileFromTextFormError: { $set: null },
+        cssFiles: { $push: [{
+          key,
+          name,
+          content,
+          createdAt: new Date(),
+        }] },
+      });
+      setStoredCSSFiles(this.state.cssFiles);
+      await this.setSelectedCSSFile(key);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      await this.unsetSelectedCSSFile();
+      await updateState(this, {
+        createCSSFileFromTextFormError: { $set: error },
+        cssFiles: { $apply: filter(cssFile => cssFile.key !== key) },
+      });
+    }
   }
   async handleLogoClick(event) {
     event.preventDefault();
@@ -163,6 +188,7 @@ class App extends Component {
     }
     const {
       cssFiles,
+      createCSSFileFromTextFormError,
     } = this.state;
     return (
       <StartView
@@ -171,6 +197,8 @@ class App extends Component {
           this.handleCreateCSSFileFromTextFormSubmit
         }
         onCSSFileClick={this.handleCSSFileClick}
+        createCSSFileFromTextInputRef={this.handleCreateCSSFileFromTextInputRef}
+        createCSSFileFromTextFormError={createCSSFileFromTextFormError}
       />
     );
   }

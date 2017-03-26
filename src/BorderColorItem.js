@@ -1,6 +1,9 @@
 import React, { PropTypes } from 'react';
 import cx from 'classnames';
 import styled from 'styled-components';
+import {
+  values,
+} from 'lodash/fp';
 
 import { isWhite } from './utils';
 
@@ -22,7 +25,7 @@ const InnerElement = styled.div`
 `;
 
 function getBorderColor(css) {
-  return Object.values(css)[0];
+  return values(css)[0];
 }
 
 const useDark = isWhite;

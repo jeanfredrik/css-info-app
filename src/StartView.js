@@ -7,6 +7,8 @@ const StartView = ({
   cssFiles,
   onCreateCSSFileFromTextFormSubmit,
   onCSSFileClick,
+  createCSSFileFromTextInputRef,
+  createCSSFileFromTextFormError,
 }) => {
   const componentId = uniqueId();
   return (
@@ -48,10 +50,28 @@ const StartView = ({
           : null
         }
         <h2>Parse new file</h2>
+        {
+          createCSSFileFromTextFormError
+          ? <div className="bg-red-15 red p2 rounded mb2">
+            {'Could not parse CSS: '}
+            {createCSSFileFromTextFormError && createCSSFileFromTextFormError.message}
+          </div>
+          : null
+        }
         <form className="" onSubmit={onCreateCSSFileFromTextFormSubmit}>
-          <label htmlFor={`css-file-content-${componentId}`}>Paste CSS here:</label>
-          <textarea id={`css-file-content-${componentId}`} className="textarea col12" rows="10" name="cssFileContent" />
-          <button className="btn" type="submit">Parse!</button>
+          <label
+            className="inline-block cursor-pointer mb1"
+            htmlFor={`css-file-content-${componentId}`}
+          >
+            Paste CSS here:
+          </label>
+          <textarea
+            id={`css-file-content-${componentId}`}
+            className="textarea col12 mb2"
+            rows="10"
+            ref={createCSSFileFromTextInputRef}
+          />
+          <button className="btn mb2 bg-green focus-outline-green white hover-border" type="submit">Parse!</button>
         </form>
       </div>
     </div>
@@ -59,12 +79,15 @@ const StartView = ({
 };
 
 StartView.defaultProps = {
+  createCSSFileFromTextFormError: null,
 };
 
 StartView.propTypes = {
   cssFiles: PropTypes.arrayOf(PropTypes.object).isRequired,
   onCreateCSSFileFromTextFormSubmit: PropTypes.func.isRequired,
   onCSSFileClick: PropTypes.func.isRequired,
+  createCSSFileFromTextInputRef: PropTypes.func.isRequired,
+  createCSSFileFromTextFormError: PropTypes.any,
 };
 
 export default StartView;

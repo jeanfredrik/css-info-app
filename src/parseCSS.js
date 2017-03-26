@@ -1,5 +1,6 @@
-import CSS from 'css';
 import { CssSelectorParser } from 'css-selector-parser';
+import CSS from 'css';
+
 import {
   filter,
   flatMap,
@@ -12,6 +13,8 @@ import {
   sortBy,
   unionBy,
 } from 'lodash/fp';
+
+import { uncurry } from './utils';
 
 const unionAllBy = iterator => reduce(unionBy(iterator), []);
 
@@ -65,9 +68,9 @@ selectorParser.registerAttrEqualityMods('^', '$', '*', '~');
 
 const parseSelector = selector => selectorParser.parse(selector);
 
-export default flow([
+export default uncurry(source => flow([
   // Parse the css string with the `css` package.
-  CSS.parse,
+  value => CSS.parse(value, { source }),
   // Get the top level nodes (regular rules and @-rules like media).
   obj => obj.stylesheet.rules,
 
@@ -128,7 +131,10 @@ export default flow([
   ),
   // Filter out rules with not exactly one class name.
   filter(
-    rule => (rule.parsedSelector.rule.classNames && rule.parsedSelector.rule.classNames.length === 1),
+    rule => (
+      rule.parsedSelector.rule.classNames
+      && rule.parsedSelector.rule.classNames.length === 1
+    ),
   ),
   // Invalidate rules with selectors that contain blacklisted pseudo classes/elements
   // or have more than one pseudo.
@@ -222,4 +228,4 @@ export default flow([
       ])(rules[0].css),
     }),
   ),
-]);
+]));
