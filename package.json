@@ -2,7 +2,16 @@
   "name": "css-info-app",
   "description": "Autogenerate documentation for functional CSS",
   "version": "1.1.0",
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jeanfredrik/css-info-app.git"
+  },
+  "author": "Fredrik Johansson <jeanfredrik@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeanfredrik/css-info-app/issues"
+  },
+  "homepage": "https://github.com/jeanfredrik/css-info-app#readme",
   "devDependencies": {
     "babel-eslint": "^7.1.1",
     "eslint": "^3.17.1",
