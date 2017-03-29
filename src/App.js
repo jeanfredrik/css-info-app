@@ -49,17 +49,21 @@ window.fromJSON = value => JSON.parse(value, jsonReviver);
 class App extends Component {
   constructor(props) {
     super(props);
-    // const cssNode = document.querySelector('.js-css');
-    // if (cssNode) {
-    //   const css = cssNode.childNodes[0].nodeValue;
-    //   const items = parseCSS(css);
-    //   this.state = update(this.state, {
-    //     items: { $set: transformItems(items) },
-    //   });
-    // }
-    const storedState = loadStateFromSessionStorage();
-    if (storedState) {
-      this.state = storedState;
+    if (window.injectedCSSFile) {
+      this.state = {
+        ...this.state,
+        cssFiles: [
+          {
+            ...window.injectedCSSFile,
+            createdAt: new Date(),
+          },
+        ],
+      };
+    } else {
+      const storedState = loadStateFromSessionStorage();
+      if (storedState) {
+        this.state = storedState;
+      }
     }
     this.state = {
       ...this.state,
@@ -77,6 +81,11 @@ class App extends Component {
     seletedCSSFile: null,
     nextPastedFileNumber: 1,
     createCSSFileFromTextFormError: null,
+  }
+  componentDidMount() {
+    if (this.state.cssFiles.find(cssFile => cssFile.key === 'injected')) {
+      this.setSelectedCSSFile('injected');
+    }
   }
   componentDidUpdate() {
     saveStateToSessionStorage(this.state);
