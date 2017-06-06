@@ -1,7 +1,7 @@
 {
   "name": "css-info-app",
   "description": "Autogenerate documentation for functional CSS",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/jeanfredrik/css-info-app.git"
@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/jeanfredrik/css-info-app/issues"
   },
-  "homepage": "https://github.com/jeanfredrik/css-info-app#readme",
+  "homepage": "https://css-info.com",
   "devDependencies": {
     "babel-eslint": "^7.1.1",
     "eslint": "^3.17.1",
@@ -31,6 +31,7 @@
     "immutability-helper": "^2.1.2",
     "is-iso-date": "0.0.1",
     "postcss-value-parser": "^3.3.0",
+    "prop-types": "^15.5.10",
     "react": "^15.4.2",
     "react-autobind": "^1.0.6",
     "react-dom": "^15.4.2",
@@ -42,6 +43,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "now deploy build"
   }
 }
