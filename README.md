@@ -2,4 +2,4 @@
 
 Autogenerate documentation for functional CSS
 
-[css-info.com](http://css-info.com/)
+[css-info.jeanfredrik.com](https://css-info.jeanfredrik.com/)
