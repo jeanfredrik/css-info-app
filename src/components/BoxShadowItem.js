@@ -4,7 +4,7 @@ import cx from 'classnames';
 import styled from 'styled-components';
 import Color from 'color';
 
-import { normalizeStyleObject, firstColorNodeValue } from './utils';
+import { normalizeStyleObject, firstColorNodeValue } from '../utils';
 
 const OuterElement = styled.div`
   height: 8rem;

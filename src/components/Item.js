@@ -4,7 +4,7 @@ import autoBind from 'react-autobind';
 
 import {
   updateStateWith,
-} from './utils';
+} from '../utils';
 import ItemContainer from './ItemContainer';
 import ItemHeader from './ItemHeader';
 

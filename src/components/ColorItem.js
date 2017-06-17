@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import styled from 'styled-components';
 
-import { isWhite } from './utils';
+import { isWhite } from '../utils';
 
 const OuterElement = styled.div`
   background-color: ${props => (

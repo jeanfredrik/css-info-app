@@ -10,7 +10,7 @@ import {
   map,
 } from 'lodash/fp';
 
-import { normalizeStyleObject } from './utils';
+import { normalizeStyleObject } from '../utils';
 
 const OuterElement = styled.div`
   height: 8rem;

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import styled from 'styled-components';
 
-import { normalizeStyleObject } from './utils';
+import { normalizeStyleObject } from '../utils';
 
 const OuterElement = styled.div`
   height: 8rem;

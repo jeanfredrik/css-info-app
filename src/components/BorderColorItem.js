@@ -6,7 +6,7 @@ import {
   values,
 } from 'lodash/fp';
 
-import { isWhite } from './utils';
+import { isWhite } from '../utils';
 
 const OuterElement = styled.div`
   height: 8rem;

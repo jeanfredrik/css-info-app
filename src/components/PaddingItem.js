@@ -6,21 +6,21 @@ import {
   mapKeys,
 } from 'lodash/fp';
 
-import { normalizeStyleObject } from './utils';
+import { normalizeStyleObject } from '../utils';
 
 const OuterElement = styled.div`
-  background-color: #facc9a;
+  background-color: #c2d086;
+  border: 1px dashed rgba(0,0,0,.5);
 `;
 
 const InnerElement = styled.div`
   min-width: 2rem;
   min-height: 2rem;
-  border: 1px dashed rgba(0,0,0,.5);
   box-sizing: border-box;
   background: #89b5c1;
 `;
 
-const MarginItem = ({
+const PaddingItem = ({
   css,
 }) => (
   <OuterElement
@@ -40,8 +40,8 @@ const MarginItem = ({
   </OuterElement>
 );
 
-MarginItem.propTypes = {
+PaddingItem.propTypes = {
   css: PropTypes.object.isRequired,
 };
 
-export default MarginItem;
+export default PaddingItem;
