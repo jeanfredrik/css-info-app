@@ -42,7 +42,7 @@
     "redux": "^3.7.0",
     "reselect": "^3.0.1",
     "shortid": "^2.2.8",
-    "styled-components": "^1.4.4"
+    "styled-components": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
