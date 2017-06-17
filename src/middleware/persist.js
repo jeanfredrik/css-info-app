@@ -41,7 +41,13 @@ const localStorage = {
   },
 };
 
-export default (select, actionType = 'PATCH_FROM_LOCAL_STORAGE', key = 'store') => applyMiddleware((store) => {
+export default (
+  select,
+  {
+    actionType = 'PATCH_FROM_LOCAL_STORAGE',
+    key = process.env.REACT_APP_LOCAL_STORAGE_KEY || 'store',
+  } = {},
+) => applyMiddleware((store) => {
   const storage = localStorage;
   const patchFromLocalStorage = values => ({
     type: actionType,

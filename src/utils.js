@@ -42,6 +42,12 @@ export const uncurry = fn => (...args) => {
   return result;
 };
 
+export const push = uncurry(
+  element =>
+  array =>
+  array.concat(element),
+);
+
 export const updateState = uncurry(
   component =>
   modifier =>
