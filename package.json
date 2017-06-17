@@ -31,6 +31,7 @@
     "is-iso-date": "0.0.1",
     "postcss-value-parser": "^3.3.0",
     "prop-types": "^15.5.10",
+    "randomstring": "^1.1.5",
     "react": "^15.5.4",
     "react-autobind": "^1.0.6",
     "react-dom": "^15.5.4",
