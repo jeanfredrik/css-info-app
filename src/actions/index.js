@@ -70,3 +70,13 @@ export function mountCSSFile(cssFileId) {
     }
   };
 }
+
+export function handleInjectedCSSFile(cssFile) {
+  return async (dispatch) => {
+    dispatch({
+      type: 'ADD_CSS_FILE',
+      cssFile,
+    });
+    dispatch(mountCSSFile(cssFile.id));
+  };
+}

@@ -20,6 +20,14 @@ import parseCSS from '../parseCSS';
 
 export default (state, action) => {
   switch (action.type) {
+    case 'ADD_CSS_FILE': {
+      const newCSSFile = action.cssFile;
+      return flow([
+        update('cssFiles', filter(cssFile => cssFile.id !== newCSSFile.id)),
+        update('cssFiles', push(newCSSFile)),
+        set('lastCSSFileId', newCSSFile.id),
+      ])(state);
+    }
     case 'CREATE_CSS_FILE_FROM_TEXT': {
       const pastedFileNumber = getNextPastedFileNumber(state);
       const newCSSFile = {
