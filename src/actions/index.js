@@ -1,5 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
+import qs from 'qs';
+
 import {
   getCSSFile,
   getLastCSSFileId,
@@ -21,8 +23,11 @@ export function createCSSFileFromURL(url) {
 }
 
 export function unmountCSSFile() {
-  return {
-    type: 'UNMOUNT_CSS_FILE',
+  return async (dispatch) => {
+    dispatch({
+      type: 'UNMOUNT_CSS_FILE',
+    });
+    window.history.replaceState(null, '', '/');
   };
 }
 
@@ -42,6 +47,7 @@ export function mountCSSFile(cssFileId) {
     });
     let cssFile = getCSSFile(getState())(cssFileId);
     if (cssFile.url) {
+      window.history.replaceState(null, '', `/?${qs.stringify({ url: cssFile.url })}`);
       dispatch(updateCSSFile(cssFileId, {
         loading: true,
       }));
