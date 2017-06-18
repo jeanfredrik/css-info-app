@@ -18,13 +18,13 @@ const localStorage = {
   },
   parseValue(value) {
     try {
-      return JSON.parse(atob(value));
+      return JSON.parse((value));
     } catch (error) {
       return null;
     }
   },
   stringifyValue(value) {
-    return btoa(JSON.stringify(value));
+    return (JSON.stringify(value));
   },
   onUpdate(key, callback) {
     const listener = (event) => {

@@ -4,9 +4,13 @@ import { createSelector } from 'reselect';
 import {
   memoize,
   sortBy,
-  assign,
   findIndex,
 } from 'lodash/fp';
+
+import {
+  transformItems,
+} from '../utils';
+import parseCSS from '../parseCSS';
 
 export const getNextPastedFileNumber = createSelector(
   state => state.lastPastedFileNumber,
@@ -40,14 +44,20 @@ export const hasMountedCSSFile = createSelector(
 );
 
 export const getMountedCSSFile = createSelector(
-  state => state.mountedCSSFile,
+  state => state.mountedCSSFileId,
   state => state.cssFiles,
-  (mountedCSSFile, cssFiles) => (
-    mountedCSSFile
-    ? assign(
-      mountedCSSFile,
-      cssFiles.find(cssFile => cssFile.id === mountedCSSFile.id),
-    )
+  (mountedCSSFileId, cssFiles) => (
+    mountedCSSFileId
+    ? cssFiles.find(cssFile => cssFile.id === mountedCSSFileId)
     : null
+  ),
+);
+
+export const getMountedCSSFileItems = createSelector(
+  getMountedCSSFile,
+  mountedCSSFile => (
+    mountedCSSFile.content
+    ? transformItems(parseCSS(mountedCSSFile.name, mountedCSSFile.content))
+    : []
   ),
 );

@@ -5,6 +5,7 @@ import autobind from 'react-autobind';
 
 import {
   getMountedCSSFile,
+  getMountedCSSFileItems,
 } from '../selectors';
 import {
   unmountCSSFile,
@@ -20,6 +21,7 @@ const categorizeItems = prepareItems(categories);
 const connector = connect(
   state => ({
     ...getMountedCSSFile(state),
+    items: getMountedCSSFileItems(state),
   }),
   null,
   (stateProps, { dispatch }, ownProps) => ({

@@ -7,6 +7,7 @@ import {
 import {
   Form,
   Textarea,
+  Text,
 } from 'react-form';
 import styled from 'styled-components';
 
@@ -24,6 +25,7 @@ const fieldIdMaker = () => {
 const StartView = ({
   cssFiles,
   onCreateCSSFileFromTextFormSubmit,
+  onCreateCSSFileFromURLFormSubmit,
   onCSSFileClick,
 }) => (
   <div className="flex flex-column height-100">
@@ -60,7 +62,10 @@ const StartView = ({
                     {
                       error
                       ? <ErrorBadge>
-                        Parse error
+                        {{
+                          fetch: 'Fetch error',
+                          parse: 'Parse error',
+                        }[error.type]}
                       </ErrorBadge>
                       : null
                     }
@@ -76,7 +81,37 @@ const StartView = ({
         )
         : null
       }
-      <h2>Parse new file</h2>
+      <h2>Parse from URL</h2>
+      <Form
+        onSubmit={onCreateCSSFileFromURLFormSubmit}
+        fieldId={fieldIdMaker()}
+      >{({ submitForm, fieldId }) => (
+        <form onSubmit={submitForm} className="flex items-baseline mrn1">
+          <label
+            className="inline-block cursor-pointer mb1 mr1"
+            htmlFor={fieldId('url')}
+          >
+            URL:
+          </label>
+          <div
+            className="flex-auto mr1"
+          >
+            <Text
+              field="url"
+              type="text"
+              id={fieldId('url')}
+              className="input col12 mb2"
+            />
+          </div>
+          <button
+            className="btn mb2 bg-green focus-outline-green white hover-border mr1"
+            type="submit"
+          >
+            Parse!
+          </button>
+        </form>
+      )}</Form>
+      <h2>Parse from pasted CSS</h2>
       <Form
         onSubmit={onCreateCSSFileFromTextFormSubmit}
         fieldId={fieldIdMaker()}
@@ -113,6 +148,7 @@ StartView.defaultProps = {
 StartView.propTypes = {
   cssFiles: PropTypes.arrayOf(PropTypes.object).isRequired,
   onCreateCSSFileFromTextFormSubmit: PropTypes.func.isRequired,
+  onCreateCSSFileFromURLFormSubmit: PropTypes.func.isRequired,
   onCSSFileClick: PropTypes.func.isRequired,
 };
 

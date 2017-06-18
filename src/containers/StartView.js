@@ -6,6 +6,7 @@ import {
 } from '../selectors';
 import {
   createCSSFileFromText,
+  createCSSFileFromURL,
   mountCSSFile,
 } from '../actions';
 import StartView from '../components/StartView';
@@ -18,9 +19,16 @@ export default connect(
   (stateProps, { dispatch }, ownProps) => ({
     ...stateProps,
     ...ownProps,
-    onCreateCSSFileFromTextFormSubmit({ text }) {
+    async onCreateCSSFileFromTextFormSubmit({ text }) {
       const state = dispatch(createCSSFileFromText(text));
-      dispatch(mountCSSFile(getLastCSSFileId(state)));
+      const cssFileId = getLastCSSFileId(state);
+      await dispatch(mountCSSFile(cssFileId));
+    },
+    async onCreateCSSFileFromURLFormSubmit({ url }) {
+      const state = dispatch(createCSSFileFromURL(url));
+      const cssFileId = getLastCSSFileId(state);
+      await dispatch(mountCSSFile(cssFileId));
+      // await dispatch(fetchCSSFile(cssFileId));
     },
     onCSSFileClick(event) {
       event.preventDefault();

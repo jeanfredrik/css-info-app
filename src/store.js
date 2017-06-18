@@ -1,4 +1,5 @@
-import { compose, createStore } from 'redux';
+import { compose, createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import {
   pick,
 } from 'lodash/fp';
@@ -11,6 +12,7 @@ import dispatchReturnState from './middleware/dispatchReturnState';
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const enhancer = composeEnhancers(
+  applyMiddleware(thunk),
   persist(pick([
     'cssFiles',
     'lastPastedFileNumber',

@@ -6,6 +6,7 @@ import 'amino-css/dist/amino.css';
 import StartView from '../containers/StartView';
 import MainView from '../containers/MainView';
 import MountErrorView from '../containers/MountErrorView';
+import MountLoadingView from '../containers/MountLoadingView';
 
 const App = ({
   mountedCSSFile,
@@ -18,6 +19,11 @@ const App = ({
   if (mountedCSSFile.error) {
     return (
       <MountErrorView />
+    );
+  }
+  if (mountedCSSFile.loading) {
+    return (
+      <MountLoadingView />
     );
   }
   return (
