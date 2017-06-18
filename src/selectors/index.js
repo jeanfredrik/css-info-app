@@ -48,4 +48,4 @@ export const getMountedCSSFile = createSelector(
   ),
 );
 
-export const getMountedCSSFileItems = state => state.mountedCSSFileItems;
+export const getMountedCSSFileItems = state => state.mountedCSSFileItems || [];
