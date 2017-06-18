@@ -1,18 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Header from './Header';
+
 const MountErrorView = ({
   cssFile,
   onLogoClick,
 }) => (
   <div className="flex flex-column height-100">
-    <div className="flex-none border-bottom flex items-center p1">
-      <h1 className="h3 regular my0">
-        <a href="" className="link-reset block p1" onClick={onLogoClick}>
-          <span style={{ paddingRight: '.125em' }}>css</span>
-          <span style={{ paddingLeft: '.125em', borderLeft: '1px solid currentColor' }}>info</span></a>
-      </h1>
-    </div>
+    <Header onLogoClick={onLogoClick} />
     <div
       className="flex-auto overflow-scroll flex justify-center items-center"
     >

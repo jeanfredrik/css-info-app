@@ -11,6 +11,8 @@ import {
 } from 'react-form';
 import styled from 'styled-components';
 
+import Header from './Header';
+
 const ErrorBadge = styled.span.attrs({
   className: 'bg-red-15 red rounded h6',
 })`
@@ -29,12 +31,24 @@ const StartView = ({
   onCSSFileClick,
 }) => (
   <div className="flex flex-column height-100">
-    <div className="flex-none border-bottom flex items-center p1">
-      <h1 className="p1 h3 regular my0">
-        <span style={{ paddingRight: '.125em' }}>css</span>
-        <span style={{ paddingLeft: '.125em', borderLeft: '1px solid currentColor' }}>info</span>
-      </h1>
-    </div>
+    <Header>
+      {
+        process.env.REACT_APP_VERSION && process.env.REACT_APP_RELEASE_LIST
+        ? (
+          <span className="flex-none ml-auto p1">
+            <a
+              href={process.env.REACT_APP_RELEASE_LIST}
+              target="_blank"
+              className="color-inherit opacity-50 no-underline hover-underline"
+              rel="noopener noreferrer"
+            >
+              {process.env.REACT_APP_VERSION}
+            </a>
+          </span>
+        )
+        : null
+      }
+    </Header>
     <div className="p2 overflow-auto flex-auto">
       <div className="mb4 mtn4" />
       <h2 className="mt3">Parse from URL</h2>

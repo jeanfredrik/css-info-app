@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import CategoryList from './CategoryList';
+import Header from './Header';
 
 const MainView = ({
   search,
@@ -14,12 +15,7 @@ const MainView = ({
   showAllMediaClassNames,
 }) => (
   <div className="flex flex-column height-100">
-    <div className="flex-none border-bottom flex items-center p1">
-      <h1 className="h3 regular my0">
-        <a href="" className="link-reset block p1" onClick={onLogoClick}>
-          <span style={{ paddingRight: '.125em' }}>css</span>
-          <span style={{ paddingLeft: '.125em', borderLeft: '1px solid currentColor' }}>info</span></a>
-      </h1>
+    <Header onLogoClick={onLogoClick}>
       <input
         type="text"
         className="input flex-auto mx1"
@@ -41,7 +37,7 @@ const MainView = ({
           @
         </button>
       </div>
-    </div>
+    </Header>
     <CategoryList
       categories={categories}
       className="flex-auto overflow-scroll"
