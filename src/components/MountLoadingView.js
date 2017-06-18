@@ -18,7 +18,7 @@ const MountLoadingView = ({
     >
       <div className="flex flex-column items-start">
         <div className="gray">
-          Loading <em>{cssFile.name}</em>
+          Fetching <em>{cssFile.name}</em>
         </div>
       </div>
     </div>
