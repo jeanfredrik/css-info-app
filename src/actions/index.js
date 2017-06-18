@@ -2,6 +2,7 @@
 
 import {
   getCSSFile,
+  getLastCSSFileId,
 } from '../selectors';
 import fetchCSSFile from '../lib/fetchCSSFile';
 
@@ -78,5 +79,13 @@ export function handleInjectedCSSFile(cssFile) {
       cssFile,
     });
     dispatch(mountCSSFile(cssFile.id));
+  };
+}
+
+export function handleURLParam(url) {
+  return async (dispatch) => {
+    const state = dispatch(createCSSFileFromURL(url));
+    const cssFileId = getLastCSSFileId(state);
+    await dispatch(mountCSSFile(cssFileId));
   };
 }
