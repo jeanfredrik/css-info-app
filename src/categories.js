@@ -17,22 +17,22 @@ import {
   matchOnlyProperties,
   titleCase,
 } from './utils';
-import BackgroundColorItem from './BackgroundColorItem';
-import BorderColorItem from './BorderColorItem';
-import BorderItem from './BorderItem';
-import BorderRadiusItem from './BorderRadiusItem';
-import BorderStyleItem from './BorderStyleItem';
-import BorderWidthItem from './BorderWidthItem';
-import BoxShadowItem from './BoxShadowItem';
-import ColorItem from './ColorItem';
-import DefaultItem from './DefaultItem';
-import FontFamilyItem from './FontFamilyItem';
-import FontSizeItem from './FontSizeItem';
-import FontStyleItem from './FontStyleItem';
-import HeightItem from './HeightItem';
-import MarginItem from './MarginItem';
-import PaddingItem from './PaddingItem';
-import WidthItem from './WidthItem';
+import BackgroundColorItem from './components/BackgroundColorItem';
+import BorderColorItem from './components/BorderColorItem';
+import BorderItem from './components/BorderItem';
+import BorderRadiusItem from './components/BorderRadiusItem';
+import BorderStyleItem from './components/BorderStyleItem';
+import BorderWidthItem from './components/BorderWidthItem';
+import BoxShadowItem from './components/BoxShadowItem';
+import ColorItem from './components/ColorItem';
+import DefaultItem from './components/DefaultItem';
+import FontFamilyItem from './components/FontFamilyItem';
+import FontSizeItem from './components/FontSizeItem';
+import FontStyleItem from './components/FontStyleItem';
+import HeightItem from './components/HeightItem';
+import MarginItem from './components/MarginItem';
+import PaddingItem from './components/PaddingItem';
+import WidthItem from './components/WidthItem';
 
 export default map(defaults({
   Component: DefaultItem,

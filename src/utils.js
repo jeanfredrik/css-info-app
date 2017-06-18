@@ -42,6 +42,12 @@ export const uncurry = fn => (...args) => {
   return result;
 };
 
+export const push = uncurry(
+  element =>
+  array =>
+  array.concat(element),
+);
+
 export const updateState = uncurry(
   component =>
   modifier =>
@@ -397,3 +403,13 @@ export const titleCase = flow([
   lowerCase,
   upperFirst,
 ]);
+
+export const truncateURL = url => url.replace(
+  /^https?:\/\/(.*?)(\/.*?)?(\/[^/]+)$/,
+  (match, p1, p2, p3) => {
+    if (p2) {
+      return `${p1}/…${p3}`;
+    }
+    return `${p1}${p3}`;
+  },
+);
