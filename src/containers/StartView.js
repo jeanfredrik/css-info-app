@@ -28,7 +28,6 @@ export default connect(
       const state = dispatch(createCSSFileFromURL(url));
       const cssFileId = getLastCSSFileId(state);
       await dispatch(mountCSSFile(cssFileId));
-      // await dispatch(fetchCSSFile(cssFileId));
     },
     onCSSFileClick(event) {
       event.preventDefault();

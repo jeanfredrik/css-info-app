@@ -3,7 +3,7 @@
 import {
   getCSSFile,
 } from '../selectors';
-import fetchRemoteCSSFile from '../lib/fetchCSSFile';
+import fetchCSSFile from '../lib/fetchCSSFile';
 
 export function createCSSFileFromText(text) {
   return {
@@ -48,31 +48,7 @@ export function mountCSSFile(cssFileId) {
     }));
     try {
       cssFile = getCSSFile(getState())(cssFileId);
-      const content = await fetchRemoteCSSFile(cssFile.url);
-      dispatch(updateCSSFile(cssFileId, {
-        loading: false,
-        content,
-      }));
-    } catch (thrownError) {
-      dispatch(updateCSSFile(cssFileId, {
-        error: {
-          loading: false,
-          type: 'fetch',
-          message: thrownError.message,
-        },
-      }));
-    }
-  };
-}
-
-export function fetchCSSFile(cssFileId) {
-  return async (dispatch, getState) => {
-    dispatch(updateCSSFile(cssFileId, {
-      loading: true,
-    }));
-    try {
-      const cssFile = getCSSFile(getState())(cssFileId);
-      const content = await fetchRemoteCSSFile(cssFile.url);
+      const content = await fetchCSSFile(cssFile.url);
       dispatch(updateCSSFile(cssFileId, {
         loading: false,
         content,
