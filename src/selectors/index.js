@@ -7,11 +7,6 @@ import {
   findIndex,
 } from 'lodash/fp';
 
-import {
-  transformItems,
-} from '../utils';
-import parseCSS from '../parseCSS';
-
 export const getNextPastedFileNumber = createSelector(
   state => state.lastPastedFileNumber,
   lastPastedFileNumber => (lastPastedFileNumber || 0) + 1,
@@ -53,11 +48,4 @@ export const getMountedCSSFile = createSelector(
   ),
 );
 
-export const getMountedCSSFileItems = createSelector(
-  getMountedCSSFile,
-  mountedCSSFile => (
-    mountedCSSFile.content
-    ? transformItems(parseCSS(mountedCSSFile.name, mountedCSSFile.content))
-    : []
-  ),
-);
+export const getMountedCSSFileItems = state => state.mountedCSSFileItems;

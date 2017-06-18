@@ -40,27 +40,33 @@ export function mountCSSFile(cssFileId) {
       cssFileId,
     });
     let cssFile = getCSSFile(getState())(cssFileId);
-    if (!cssFile.url) {
-      return;
-    }
-    dispatch(updateCSSFile(cssFileId, {
-      loading: true,
-    }));
-    try {
-      cssFile = getCSSFile(getState())(cssFileId);
-      const content = await fetchCSSFile(cssFile.url);
+    if (cssFile.url) {
       dispatch(updateCSSFile(cssFileId, {
-        loading: false,
-        content,
+        loading: true,
       }));
-    } catch (thrownError) {
-      dispatch(updateCSSFile(cssFileId, {
-        error: {
+      try {
+        cssFile = getCSSFile(getState())(cssFileId);
+        const content = await fetchCSSFile(cssFile.url);
+        dispatch(updateCSSFile(cssFileId, {
           loading: false,
-          type: 'fetch',
-          message: thrownError.message,
-        },
-      }));
+          content,
+        }));
+      } catch (thrownError) {
+        dispatch(updateCSSFile(cssFileId, {
+          error: {
+            loading: false,
+            type: 'fetch',
+            message: thrownError.message,
+          },
+        }));
+      }
+    }
+    cssFile = getCSSFile(getState())(cssFileId);
+    if (!cssFile.error) {
+      dispatch({
+        type: 'PARSE_CSS_FILE',
+        cssFileId,
+      });
     }
   };
 }

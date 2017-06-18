@@ -69,6 +69,12 @@ selectorParser.registerAttrEqualityMods('^', '$', '*', '~');
 const parseSelector = selector => selectorParser.parse(selector);
 
 export default uncurry(source => flow([
+  (value) => {
+    if (!value) {
+      throw new Error('Can’t parse an empty string');
+    }
+    return value;
+  },
   // Parse the css string with the `css` package.
   value => CSS.parse(value, { source }),
   // Get the top level nodes (regular rules and @-rules like media).

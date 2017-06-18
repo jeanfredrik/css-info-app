@@ -10,11 +10,13 @@ import shortid from 'shortid';
 import {
   push,
   truncateURL,
+  transformItems,
 } from '../utils';
 import {
   getNextPastedFileNumber,
   getCSSFileIndex,
 } from '../selectors';
+import parseCSS from '../parseCSS';
 
 export default (state, action) => {
   switch (action.type) {
@@ -55,9 +57,30 @@ export default (state, action) => {
       ])(state);
     }
     case 'MOUNT_CSS_FILE': {
+      const index = getCSSFileIndex(state)(action.cssFileId);
       return flow([
         set('mountedCSSFileId', action.cssFileId),
+        set(['cssFiles', index, 'error'], null),
       ])(state);
+    }
+    case 'PARSE_CSS_FILE': {
+      const index = getCSSFileIndex(state)(action.cssFileId);
+      const cssFile = state.cssFiles[index];
+      try {
+        const items = transformItems(parseCSS(cssFile.name, cssFile.content));
+        return flow([
+          set('mountedCSSFileItems', items),
+          set(['cssFiles', index, 'error'], null),
+        ])(state);
+      } catch (thrownError) {
+        return flow([
+          set('mountedCSSFileItems', []),
+          set(['cssFiles', index, 'error'], {
+            type: 'parse',
+            message: thrownError.message,
+          }),
+        ])(state);
+      }
     }
     case 'UNMOUNT_CSS_FILE': {
       return flow([
