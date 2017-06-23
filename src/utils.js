@@ -1,7 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
 import update from 'immutability-helper';
-import isISODate from 'is-iso-date';
 import Color from 'color';
 import valueParser from 'postcss-value-parser';
 
@@ -135,22 +134,6 @@ export const prepareItems = uncurry(categories => (query) => {
     categorizeItems(categories),
   ]);
 });
-
-export function jsonReplacer(key, value) {
-  // console.log(key, value, typeof value);
-  // if (value instanceof Date) {
-  //   console.log(value);
-  //   return { $date: value.toJSON() };
-  // }
-  return value;
-}
-
-export function jsonReviver(key, value) {
-  if (typeof value === 'string' && isISODate(value)) {
-    return new Date(value);
-  }
-  return value;
-}
 
 export const getCSSValue = property => flow([
   find(declaration => declaration[0] === property),
