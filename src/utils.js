@@ -396,3 +396,15 @@ export const truncateURL = url => url.replace(
     return `${p1}${p3}`;
   },
 );
+
+/*
+This is a utility function for compatibility with `css-selector-parser`.
+Characters U+00A0 and higher are valid in CSS identifiers according to the spec,
+but that package can’t handle them, so we have to escape them like you would do
+in CSS, e.g. "ö" becomes "\F6 ". `css-selector-parser` decodes all escaped
+character sequences during parsing, so no need for an `unescapeSelector` function.
+*/
+export const escapeSelector = selector => selector.replace(
+  /[^\x00-\xA0]/g,
+  match => `\\${match.charCodeAt(0).toString(16).toUpperCase()} `,
+);

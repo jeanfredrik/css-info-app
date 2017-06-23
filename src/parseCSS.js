@@ -14,7 +14,10 @@ import {
   unionBy,
 } from 'lodash/fp';
 
-import { uncurry } from './utils';
+import {
+  escapeSelector,
+  uncurry,
+} from './utils';
 
 const unionAllBy = iterator => reduce(unionBy(iterator), []);
 
@@ -113,7 +116,7 @@ export default uncurry(from => flow([
   map(
     node => ({
       ...node,
-      parsedSelector: parseSelector(node.selector),
+      parsedSelector: parseSelector(escapeSelector(node.selector)),
     }),
   ),
   flatMap(
