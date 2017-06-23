@@ -1,7 +1,7 @@
 {
   "name": "css-info-app",
   "description": "Autogenerate documentation for functional CSS",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/jeanfredrik/css-info-app.git"
