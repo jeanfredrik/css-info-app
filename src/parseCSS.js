@@ -1,5 +1,5 @@
 import { CssSelectorParser } from 'css-selector-parser';
-import CSS from 'css';
+import postcss from 'postcss';
 
 import {
   filter,
@@ -68,17 +68,17 @@ selectorParser.registerAttrEqualityMods('^', '$', '*', '~');
 
 const parseSelector = selector => selectorParser.parse(selector);
 
-export default uncurry(source => flow([
+export default uncurry(from => flow([
   (value) => {
     if (!value) {
       throw new Error('Can’t parse an empty string');
     }
     return value;
   },
-  // Parse the css string with the `css` package.
-  value => CSS.parse(value, { source }),
+  // Parse the css string with the `postcss` parser.
+  value => postcss.parse(value, { from }),
   // Get the top level nodes (regular rules and @-rules like media).
-  obj => obj.stylesheet.rules,
+  obj => obj.nodes,
 
   // PART 1: Handle media
   // Extract all top level nodes that are regular rules.
@@ -86,78 +86,85 @@ export default uncurry(source => flow([
   // Make a "null" media node for the extracted rules and re-add the rest.
   ([rulesWithoutMedia, rest]) => [
     {
-      media: null,
-      type: 'media',
-      rules: rulesWithoutMedia,
+      name: 'media',
+      params: null,
+      type: 'atrule',
+      nodes: rulesWithoutMedia,
     },
     ...rest,
   ],
   // Filter out all top level nodes that are not media nodes.
-  filter(node => node.type === 'media'),
+  filter(node => node.type === 'atrule' && node.name === 'media'),
   flatMap(
-    mediaRule => flow([
+    mediaNode => flow([
       // In each media node, filter out all nodes that are not rules
       filter(node => node.type === 'rule'),
       // Add `media` property to every rule node.
       map(
-        rule => ({
-          ...rule,
-          media: mediaRule.media,
+        node => ({
+          ...node,
+          media: mediaNode.params,
         }),
       ),
-    ])(mediaRule.rules),
+    ])(mediaNode.nodes),
   ),
 
-  // PART 2: Split rules with stacked selectors and parse the selectors
-  flatMap(
-    rule => flow([
-      map(
-        selector => ({
-          ...rule,
-          selector,
-        }),
-      ),
-    ])(rule.selectors),
-  ),
+  // PART 2: Parse the selectors and split rules with stacked selectors
   map(
-    rule => ({
-      ...rule,
-      parsedSelector: parseSelector(rule.selector),
+    node => ({
+      ...node,
+      parsedSelector: parseSelector(node.selector),
     }),
+  ),
+  flatMap(
+    node => (
+      node.parsedSelector.type === 'selectors'
+      ? map(
+        selector => ({
+          ...node,
+          parsedSelector: selector,
+          selector: null,
+        }),
+        node.parsedSelector.selectors,
+      )
+      : [
+        node,
+      ]
+    ),
   ),
 
   // PART 3: Handle selectors
   // Filter out rules with selectors that contain tag names, attributes or nesting operators.
   filter(
-    rule => (
-      !rule.parsedSelector.rule.tagName
-      && !rule.parsedSelector.rule.attrs
-      && !rule.parsedSelector.rule.nestingOperator
+    node => (
+      !node.parsedSelector.rule.tagName
+      && !node.parsedSelector.rule.attrs
+      && !node.parsedSelector.rule.nestingOperator
     ),
   ),
   // Filter out rules with not exactly one class name.
   filter(
-    rule => (
-      rule.parsedSelector.rule.classNames
-      && rule.parsedSelector.rule.classNames.length === 1
+    node => (
+      node.parsedSelector.rule.classNames
+      && node.parsedSelector.rule.classNames.length === 1
     ),
   ),
   // Invalidate rules with selectors that contain blacklisted pseudo classes/elements
   // or have more than one pseudo.
   map(
-    rule => ({
-      ...rule,
+    node => ({
+      ...node,
       invalid: (
-        rule.invalid
+        node.invalid
         || (
-          rule.parsedSelector.rule.pseudos
+          node.parsedSelector.rule.pseudos
           && (
             (
-              rule.parsedSelector.rule.pseudos.length > 1
+              node.parsedSelector.rule.pseudos.length > 1
               && 'More than one pseudo class/element in selector'
             )
             || (
-              !PSEUDO_CLASSES.includes(rule.parsedSelector.rule.pseudos[0].name)
+              !PSEUDO_CLASSES.includes(node.parsedSelector.rule.pseudos[0].name)
               && 'Forbidden pseudo class/element in selector'
             )
           )
@@ -167,14 +174,14 @@ export default uncurry(source => flow([
   ),
   // Add class name and state to each rule.
   map(
-    rule => ({
-      ...rule,
-      className: rule.parsedSelector.rule.classNames[0],
+    node => ({
+      ...node,
+      className: node.parsedSelector.rule.classNames[0],
       state: (
         (
-          rule.parsedSelector.rule.pseudos
-          && rule.parsedSelector.rule.pseudos[0]
-          && rule.parsedSelector.rule.pseudos[0].name
+          node.parsedSelector.rule.pseudos
+          && node.parsedSelector.rule.pseudos[0]
+          && node.parsedSelector.rule.pseudos[0].name
         )
         || null
       ),
@@ -183,55 +190,55 @@ export default uncurry(source => flow([
 
   // PART 4: Handle declarations
   map(
-    rule => ({
-      ...rule,
+    node => ({
+      ...node,
       css: flow([
         // Filter out nodes that are not declarations
-        filter(node => node.type === 'declaration'),
+        filter(childNode => childNode.type === 'decl'),
         // Sort
-        sortBy('property'),
-        map(({ property, value }) => [property, value]),
-      ])(rule.declarations),
+        sortBy('prop'),
+        map(({ prop, value }) => [prop, value]),
+      ])(node.nodes),
     }),
   ),
 
   // PART 5: Merge rules with same class name
   groupBy(
-    rule => rule.className,
+    node => node.className,
   ),
   map(
-    rules => ({
-      ...rules[0],
+    nodes => ({
+      ...nodes[0],
       css: flow([
-        map(rule => rule.css),
+        map(node => node.css),
         unionAllBy(0),
-      ])(rules),
+      ])(nodes),
     }),
   ),
 
   // PART 6: Merge rules with same declarations
   // Use `JSON.stringify` to group rules
   groupBy(
-    rule => JSON.stringify(rule.css),
+    node => JSON.stringify(node.css),
   ),
   // Convert the grouped rules to items
   map(
-    rules => ({
-      ...rules[0],
+    nodes => ({
+      ...nodes[0],
       classNames: flow([
-        map(rule => ({
-          name: rule.className,
-          state: rule.state,
-          media: rule.media,
+        map(node => ({
+          name: node.className,
+          state: node.state,
+          media: node.media,
         })),
         sortBy([
           className => className.state || '',
           className => className.media || '',
         ]),
-      ])(rules),
+      ])(nodes),
       css: flow([
         fromPairs,
-      ])(rules[0].css),
+      ])(nodes[0].css),
     }),
   ),
 ]));
