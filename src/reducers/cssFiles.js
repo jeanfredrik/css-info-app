@@ -81,6 +81,8 @@ export default (state, action) => {
           set(['cssFiles', index, 'error'], null),
         ])(state);
       } catch (thrownError) {
+        // eslint-disable-next-line no-console
+        console.error(thrownError);
         return flow([
           set('mountedCSSFileItems', []),
           set(['cssFiles', index, 'error'], {
