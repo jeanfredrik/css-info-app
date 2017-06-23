@@ -56,29 +56,34 @@ const StartView = ({
         onSubmit={onCreateCSSFileFromURLFormSubmit}
         fieldId={fieldIdMaker()}
       >{({ submitForm, fieldId }) => (
-        <form onSubmit={submitForm} className="flex items-baseline mrn1">
-          <label
-            className="inline-block cursor-pointer mr1"
-            htmlFor={fieldId('url')}
-          >
-            URL:
-          </label>
-          <div
-            className="flex-auto mr1"
-          >
-            <Text
-              field="url"
-              type="text"
-              id={fieldId('url')}
-              className="input col12"
-            />
+        <form onSubmit={submitForm} className="">
+          <div className="flex items-baseline mrn1 mb1">
+            <label
+              className="inline-block cursor-pointer mr1"
+              htmlFor={fieldId('url')}
+            >
+              URL:
+            </label>
+            <div
+              className="flex-auto mr1"
+            >
+              <Text
+                field="url"
+                type="text"
+                id={fieldId('url')}
+                className="input col12"
+              />
+            </div>
+            <button
+              className="btn bg-green focus-outline-green white hover-border mr1"
+              type="submit"
+            >
+              Parse!
+            </button>
           </div>
-          <button
-            className="btn bg-green focus-outline-green white hover-border mr1"
-            type="submit"
-          >
-            Parse!
-          </button>
+          <p className="h5 opacity-50">
+            Note: The URL must point to a valid CSS file.
+          </p>
         </form>
       )}</Form>
       <h2 className="mt3">Parse from pasted CSS</h2>
