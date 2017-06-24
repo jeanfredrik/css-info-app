@@ -94,9 +94,9 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-amino-css@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/amino-css/-/amino-css-1.0.0.tgz#fe459937d32a046df6f14690a2c2d598379af08a"
+amino-css@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/amino-css/-/amino-css-1.2.0.tgz#41a7d2e7e3bda05fcb76eae70fc8956745ac822b"
   dependencies:
     color "^1.0.3"
     harpy-css "^0.4.0"
@@ -917,7 +917,7 @@ babel-register@^6.24.1:
     mkdirp "^0.5.1"
     source-map-support "^0.4.2"
 
-babel-runtime@6.23.0, babel-runtime@^6.18.0, babel-runtime@^6.22.0:
+babel-runtime@6.23.0, babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.6.1:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
   dependencies:
@@ -5024,6 +5024,18 @@ react-scripts@1.0.7:
     whatwg-fetch "2.0.3"
   optionalDependencies:
     fsevents "1.0.17"
+
+"react-window-size@https://github.com/jeanfredrik/react-window-size":
+  version "1.0.0"
+  resolved "https://github.com/jeanfredrik/react-window-size#b73333db721c188dd4ff091e594fa1b619a9f1d7"
+  dependencies:
+    babel-runtime "^6.6.1"
+
+"react-window-size@https://github.com/jeanfredrik/react-window-size#build":
+  version "1.0.0"
+  resolved "https://github.com/jeanfredrik/react-window-size#f28470e071ac278d1aa6f557125b6470aabbe969"
+  dependencies:
+    babel-runtime "^6.6.1"
 
 react@^15.5.4:
   version "15.6.1"
