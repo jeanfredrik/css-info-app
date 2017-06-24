@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-const StartView = ({
+const Header = ({
   onLogoClick,
   children,
 }) => (
@@ -25,14 +25,14 @@ const StartView = ({
   </div>
 );
 
-StartView.defaultProps = {
+Header.defaultProps = {
   onLogoClick: null,
   children: null,
 };
 
-StartView.propTypes = {
+Header.propTypes = {
   onLogoClick: PropTypes.func,
   children: PropTypes.node,
 };
 
-export default StartView;
+export default Header;
