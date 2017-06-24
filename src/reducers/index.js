@@ -1,6 +1,7 @@
 import reduceReducers from 'reduce-reducers';
 import {
   assign,
+  update,
 } from 'lodash/fp';
 
 import cssFiles from './cssFiles';
@@ -12,6 +13,8 @@ export default reduceReducers(
 
   (state = initialState, action) => {
     switch (action.type) {
+      case 'TOGGLE_TOC':
+        return update(['showTOC'], value => !value, state);
       case 'PATCH_FROM_LOCAL_STORAGE':
         return assign(state, action.values);
       default:

@@ -6,6 +6,7 @@ import {
   mapValues,
   sortBy,
   toArray,
+  kebabCase,
 } from 'lodash/fp';
 
 const mapValuesWithKey = mapValues.convert({
@@ -44,6 +45,7 @@ const categorizeItems = (categories) => {
       (value, key) =>
       ({
         ...categoriesByMatchPriority[key],
+        id: kebabCase(categoriesByMatchPriority[key].title),
         items: value,
       }),
     ),

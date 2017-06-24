@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import autobind from 'react-autobind';
+import windowSize from 'react-window-size';
 
 import {
   getMountedCSSFile,
@@ -9,6 +10,7 @@ import {
 } from '../selectors';
 import {
   unmountCSSFile,
+  toggleTOC,
 } from '../actions';
 import MainView from '../components/MainView';
 import categories from '../categories';
@@ -20,16 +22,22 @@ const categorizeItems = prepareItems(categories);
 
 const connector = connect(
   state => ({
-    ...getMountedCSSFile(state),
+    cssFileName: getMountedCSSFile(state).name,
     items: getMountedCSSFileItems(state),
+    showTOC: state.showTOC,
   }),
   null,
   (stateProps, { dispatch }, ownProps) => ({
     ...stateProps,
     ...ownProps,
+    showTOC: stateProps.showTOC && ownProps.windowWidth >= 768,
     onLogoClick(event) {
       event.preventDefault();
       dispatch(unmountCSSFile());
+    },
+    onTOCToggleClick(event) {
+      event.preventDefault();
+      dispatch(toggleTOC());
     },
   }),
 );
@@ -37,7 +45,6 @@ const connector = connect(
 class MainViewContainer extends Component {
   static propTypes = {
     items: PropTypes.array.isRequired,
-    onLogoClick: PropTypes.func.isRequired,
   };
   constructor(...args) {
     super(...args);
@@ -72,7 +79,7 @@ class MainViewContainer extends Component {
   render() {
     const {
       items,
-      onLogoClick,
+      ...props
     } = this.props;
     const {
       search,
@@ -81,6 +88,7 @@ class MainViewContainer extends Component {
     } = this.state;
     return (
       <MainView
+        itemCount={items.length}
         categories={categorizeItems(search, items)}
         search={search}
         showAllStateClassNames={showAllStateClassNames}
@@ -92,10 +100,10 @@ class MainViewContainer extends Component {
         onToggleShowAllMediaClassNamesButtonClick={
           this.handleToggleShowAllMediaClassNamesButtonClick
         }
-        onLogoClick={onLogoClick}
+        {...props}
       />
     );
   }
 }
 
-export default connector(MainViewContainer);
+export default windowSize(connector(MainViewContainer));

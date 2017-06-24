@@ -95,3 +95,9 @@ export function handleURLParam(url) {
     await dispatch(mountCSSFile(cssFileId));
   };
 }
+
+export function toggleTOC() {
+  return {
+    type: 'TOGGLE_TOC',
+  };
+}

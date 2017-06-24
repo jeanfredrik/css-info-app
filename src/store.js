@@ -16,6 +16,7 @@ const enhancer = composeEnhancers(
   persist(pick([
     'cssFiles',
     'lastPastedFileNumber',
+    'showTOC',
   ])),
   dispatchReturnState,
 );

@@ -3,16 +3,23 @@ import PropTypes from 'prop-types';
 
 import CategoryList from './CategoryList';
 import Header from './Header';
+// import Icon from './Icon';
+import TOC from './TOC';
+import TOCToggle from './TOCToggle';
 
 const MainView = ({
-  search,
-  onSearchChange,
   categories,
-  onToggleShowAllStateClassNamesButtonClick,
-  onToggleShowAllMediaClassNamesButtonClick,
+  cssFileName,
+  itemCount,
   onLogoClick,
-  showAllStateClassNames,
+  onSearchChange,
+  onTOCToggleClick,
+  onToggleShowAllMediaClassNamesButtonClick,
+  onToggleShowAllStateClassNamesButtonClick,
+  search,
   showAllMediaClassNames,
+  showAllStateClassNames,
+  showTOC,
 }) => (
   <div className="flex flex-column height-100">
     <Header onLogoClick={onLogoClick}>
@@ -38,31 +45,54 @@ const MainView = ({
         </button>
       </div>
     </Header>
-    <CategoryList
-      categories={categories}
-      className="flex-auto overflow-scroll"
-      showAllStateClassNames={showAllStateClassNames}
-      showAllMediaClassNames={showAllMediaClassNames}
-    />
+    <div className="flex-auto flex items-stretch">
+      {
+        showTOC
+        ? (
+          <TOC
+            categories={categories}
+            className="flex-none overflow-y-auto border-right"
+            cssFileName={cssFileName}
+            itemCount={itemCount}
+          />
+        )
+        : null
+      }
+      <TOCToggle
+        className="flex-none self-center"
+        expanded={showTOC}
+        onClick={onTOCToggleClick}
+      />
+      <CategoryList
+        categories={categories}
+        className="flex-auto overflow-scroll"
+        showAllMediaClassNames={showAllMediaClassNames}
+        showAllStateClassNames={showAllStateClassNames}
+      />
+    </div>
   </div>
 );
 
 MainView.defaultProps = {
   className: '',
-  showAllStateClassNames: false,
-  showAllMediaClassNames: false,
   search: '',
+  showAllMediaClassNames: false,
+  showAllStateClassNames: false,
 };
 
 MainView.propTypes = {
   categories: PropTypes.arrayOf(PropTypes.object).isRequired,
-  showAllStateClassNames: PropTypes.bool,
-  showAllMediaClassNames: PropTypes.bool,
-  search: PropTypes.string,
-  onSearchChange: PropTypes.func.isRequired,
-  onToggleShowAllStateClassNamesButtonClick: PropTypes.func.isRequired,
-  onToggleShowAllMediaClassNamesButtonClick: PropTypes.func.isRequired,
+  cssFileName: PropTypes.string.isRequired,
+  itemCount: PropTypes.number.isRequired,
   onLogoClick: PropTypes.func.isRequired,
+  onSearchChange: PropTypes.func.isRequired,
+  onTOCToggleClick: PropTypes.func.isRequired,
+  onToggleShowAllMediaClassNamesButtonClick: PropTypes.func.isRequired,
+  onToggleShowAllStateClassNamesButtonClick: PropTypes.func.isRequired,
+  search: PropTypes.string,
+  showAllMediaClassNames: PropTypes.bool,
+  showAllStateClassNames: PropTypes.bool,
+  showTOC: PropTypes.bool.isRequired,
 };
 
 export default MainView;

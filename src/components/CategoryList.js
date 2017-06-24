@@ -17,6 +17,7 @@ const CategoryList = ({
   >
     <ul className="list-reset m0">
       {categories.map(({
+        id,
         title,
         items,
         Component,
@@ -26,6 +27,7 @@ const CategoryList = ({
         <li
           key={title}
           className="p2"
+          id={id}
         >
           <h2
             className="mt1 mb2"
