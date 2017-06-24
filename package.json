@@ -21,7 +21,7 @@
     "react-scripts": "1.0.7"
   },
   "dependencies": {
-    "amino-css": "^1.0.0",
+    "amino-css": "^1.2.0",
     "axios": "^0.16.2",
     "classnames": "^2.2.5",
     "color": "^1.0.3",
